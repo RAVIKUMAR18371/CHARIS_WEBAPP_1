@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const gift_controller_1 = require("../controllers/gift.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const router = (0, express_1.Router)();
+router.get('/', gift_controller_1.GiftController.getAll);
+router.get('/saved', auth_middleware_1.authenticateJWT, gift_controller_1.GiftController.getSaved);
+router.post('/save', auth_middleware_1.authenticateJWT, gift_controller_1.GiftController.toggleSave);
+router.get('/:id', gift_controller_1.GiftController.getById);
+exports.default = router;

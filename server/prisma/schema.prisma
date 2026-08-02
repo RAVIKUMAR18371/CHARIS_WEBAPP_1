@@ -1,0 +1,69 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  name          String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  conversations Conversation[]
+  savedGifts    SavedGift[]
+}
+
+model Conversation {
+  id                   String           @id @default(uuid())
+  userId               String
+  user                 User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages             String           // Stored as JSON string
+  collectedInformation String           // Stored as JSON string
+  status               String           @default("ACTIVE") // ACTIVE | COMPLETED
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  recommendations      Recommendation[]
+}
+
+model Gift {
+  id               String           @id @default(uuid())
+  name             String
+  category         String
+  price            Float
+  description      String
+  story            String
+  symbolicMeaning  String
+  imageUrl         String
+  galleryImages    String           // Stored as JSON string array
+  tags             String           // Stored as JSON string array
+  createdAt        DateTime         @default(now())
+  recommendations  Recommendation[]
+  savedGifts       SavedGift[]
+}
+
+model Recommendation {
+  id                 String       @id @default(uuid())
+  conversationId     String
+  conversation       Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  giftId             String
+  gift               Gift         @relation(fields: [giftId], references: [id], onDelete: Cascade)
+  whyChosen          String
+  emotionalReasoning String
+  createdAt          DateTime     @default(now())
+}
+
+model SavedGift {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  giftId    String
+  gift      Gift     @relation(fields: [giftId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, giftId])
+}

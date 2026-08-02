@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const chat_controller_1 = require("../controllers/chat.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticateJWT);
+router.post('/start', chat_controller_1.ChatController.start);
+router.post('/message', chat_controller_1.ChatController.sendMessage);
+router.get('/history', chat_controller_1.ChatController.getHistory);
+router.get('/:id', chat_controller_1.ChatController.getById);
+exports.default = router;

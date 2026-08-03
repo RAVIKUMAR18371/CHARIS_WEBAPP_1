@@ -7,11 +7,10 @@ node_modules/
 **/.next/
 
 # Environment
-.env
-.env.*
 
 # Database
 *.db
 
 # Logs
 npm-debug.log*
+config.bat

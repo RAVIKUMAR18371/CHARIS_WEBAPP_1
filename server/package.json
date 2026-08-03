@@ -1,6 +1,9 @@
 {
   "name": "charis-server",
   "version": "1.0.0",
+  "engines": {
+    "node": "20.x"
+  },
   "description": "CHARIS - Luxury AI Gift Concierge Backend API",
   "main": "dist/server.js",
   "scripts": {
